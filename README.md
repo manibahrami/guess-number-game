@@ -1,90 +1,94 @@
-# guess-number-game
-#Importing what we will need
+# Importing necessary libraries
 import random
 import tkinter as tk
 
 
-# __our main variables__
+# --- Main variables for the game ---
 number_to_guess = 0
 tries_count = 0
 
 
 def start_new_game():
-    global number_to_guess, tries_count # at this line we're saying we trying to change 
-    number_to_guess = random.randint(1, 100) # here we will change that
-    tries_count = 0 # tries will be reset
+    global number_to_guess, tries_count # Declaring intent to modify global variables 
+    number_to_guess = random.randint(1, 100) # Selects a new random number
+    tries_count = 0 # Resets the try counter
 
-    # here we almost reset the window
-    instruction_label.config(text="Guess a number between 1,100")
-    result_label.config(text="") # here we will delete the result text
-    attempts_label.config(text="0 : Try") # at this line we putting tries number on 0
+    # Resetting the window's elements to their initial state
+    instruction_label.config(text="Guess a number between 1 and 100") 
+    result_label.config(text="") # Clears the result message
+    attempts_label.config(text="Tries: 0") # Resets the displayed tries to 0
     
-    guess_input_box.delete(0, tk.END) # Delete the number in the guess bot
-    guess_button.config(state=tk.NORMAL) # activating the buttom guess
-    guess_input_box.config(state=tk.NORMAL) # activating the guess input box
-    guess_input_box.focus_set() # for better type
-# Tries counter function
+    guess_input_box.delete(0, tk.END) # Clears any number in the guess input box
+    guess_button.config(state=tk.NORMAL) # Enables the guess button
+    guess_input_box.config(state=tk.NORMAL) # Enables the guess input box
+    guess_input_box.focus_set() # Sets focus for easier typing
+
+# Function to check the user's guess
 def check_guess():
     global tries_count
     
     try:
-        user_guess = int(guess_input_box.get()) # making an int numb
+        user_guess = int(guess_input_box.get()) # Converts the user's input to an integer
         
-        # if the user wrote a number out of what we told
+        # Checks if the user's number is outside the allowed range
         if user_guess < 1 or user_guess > 100:
-            result_label.config(text="Please enter a number between 1,100")
+            result_label.config(text="Please enter a number between 1 and 100.") 
             return 
         
-        # if the number was between 1,100 we will count it by try
+        # If the number is valid, increments the try counter
         tries_count += 1 
-        attempts_label.config(text=f"tries: {tries_count}")
+        attempts_label.config(text=f"Tries: {tries_count}") # Updates the displayed number of tries
         
         if user_guess > number_to_guess:
-            result_label.config(text="your number is lower than your guess")
+            result_label.config(text="My number is lower than your guess.")
         elif user_guess < number_to_guess:
-            result_label.config(text="your number is higher than your guess")
-        else: # یعنی حدس درست بود
-            result_label.config(text=f"congrats the number were{number_to_guess} !")
-            guess_button.config(state=tk.DISABLED) # now we should disable the buttom and the input box
+            result_label.config(text="My number is higher than your guess.")
+        else: 
+            result_label.config(text=f"Congrats! The number was {number_to_guess}!")
+            guess_button.config(state=tk.DISABLED) # Disables the button and input box
             guess_input_box.config(state=tk.DISABLED)
-# here we are handling the errors           
+# Handles non-numeric input errors           
     except ValueError:
-        result_label.config(text="just use number")
+        result_label.config(text="Please enter only numbers.")
         
-    guess_input_box.delete(0, tk.END) # after every guess we will empty the box
+    guess_input_box.delete(0, tk.END) # Clears the input box after each guess
 
-main_window = tk.Tk() # new window
-main_window.title("guess game")
+# --- Main Window Setup ---
+main_window = tk.Tk() # Creates the main window
+main_window.title("Guessing Game") # Sets the window title
 main_window.geometry("300x250") 
-main_window.resizable(False, False) # we disabled the user to change the size of the window
+main_window.resizable(False, False) # Prevents the user from resizing the window
 
-# Guide Label
-instruction_label = tk.Label(main_window, text="guess a number between 1 , 100", font=("Arial", 10))
+# --- Widgets (elements inside the window) ---
+
+# Instruction Label
+instruction_label = tk.Label(main_window, text="Guess a number between 1 and 100:", font=("Arial", 10))
 instruction_label.pack(pady=5) 
 
-# Box for neww guess
+# Input box for user's guess
 guess_input_box = tk.Entry(main_window, width=20, font=("Arial", 12))
 guess_input_box.pack(pady=5)
 guess_input_box.focus_set()
-guess_input_box.bind("<Return>", lambda event: check_guess()) # if you press the enter it will check
+guess_input_box.bind("<Return>", lambda event: check_guess()) # Checks guess when Enter is pressed
 
-#guess buttom
-guess_button = tk.Button(main_window, text="حدس بزن", command=check_guess, font=("Arial", 10))
+# Guess Button
+guess_button = tk.Button(main_window, text="Guess", command=check_guess, font=("Arial", 10))
 guess_button.pack(pady=5)
 
-# Label
-attempts_label = tk.Label(main_window, text="تلاش‌ها: 0", font=("Arial", 10), fg="purple")
+# Attempts Label
+attempts_label = tk.Label(main_window, text="Tries: 0", font=("Arial", 10), fg="purple")
 attempts_label.pack(pady=5)
 
-# Label
+# Result Label
 result_label = tk.Label(main_window, text="", font=("Arial", 10), fg="blue")
 result_label.pack(pady=5)
 
-# and buttom for new game 
-new_game_button = tk.Button(main_window, text="بازی جدید", command=start_new_game, font=("Arial", 10))
+# Button for new game 
+new_game_button = tk.Button(main_window, text="New Game", command=start_new_game, font=("Arial", 10))
 new_game_button.pack(pady=10)
 
-#start
+# --- Start the game ---
 start_new_game()
-#keep window open
+
+# --- Keep window open ---
 main_window.mainloop()
