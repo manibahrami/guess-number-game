@@ -83,3 +83,8 @@ result_label.pack(pady=5)
 # and buttom for new game 
 new_game_button = tk.Button(main_window, text="بازی جدید", command=start_new_game, font=("Arial", 10))
 new_game_button.pack(pady=10)
+
+#start
+start_new_game()
+#keep window open
+main_window.mainloop()
