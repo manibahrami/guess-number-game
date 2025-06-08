@@ -1,3 +1,7 @@
+#About This Project 
+![Game Screenshot](gamepic.PNG)
+
+
 # Importing necessary libraries
 import random
 import tkinter as tk
